@@ -29,26 +29,6 @@
 
 <body>
 
-  <header class="hero is-primary is-medium">
-    <div class="hero-body">
-      <div class="container has-text-centered">
-        <figure class="image is-128x128" style="margin:auto;">
-          <img src="https://github.com/vuejs/awesome-vue/raw/master/logo.svg?sanitize=true">
-        </figure>
-
-        <h1 class="title">
-          vue-rangedate-picker
-        </h1>
-        <h2 class="subtitle">
-          Range date picker with simple usage
-        </h2>
-        <a class="button is-primary is-inverted is-outlined" href="https://github.com/bliblidotcom/vue-rangedate-picker">
-          <i class="fa fa-github-alt" aria-hidden="true" style="padding-right: .5em;"></i>&nbsp;&nbsp;Fork in Github
-        </a>
-      </div>
-    </div>
-  </header>
-
   <main id="app" class="main">
     <div class="container" style="margin: 20px auto;">
       <div class="columns is-centered">
@@ -59,88 +39,20 @@
             <br>
             <p class="subtitle is-6">Start Date : {{ selectedDate.start }}</p>
             <p class="subtitle is-6">End Date : {{ selectedDate.end }}</p>
+            <p class="subtitle is-6">Período : {{ periodo }}</p>
 
             <div class="card-content">
               <div class="daterange-wrapper">
-                <vue-rangedate-picker @selected="onDateSelected" i18n="EN">
+                <vue-rangedate-picker @selected="onDateSelected" @periodo="periodoSelecionado" i18n="PT" ano-inicial="1990">
                 </vue-rangedate-picker>
               </div>
             </div>
 
           </div>
         </div>
-
-        <div class="column">
-          <div class="card">
-            <p class="title is-4">Range Date Custom Format</p>
-            <br>
-            <p class="subtitle is-6">Start Date : {{ selectedDate.start }}</p>
-            <p class="subtitle is-6">End Date : {{ selectedDate.end }}</p>
-
-            <div class="card-content">
-              <div class="daterange-wrapper">
-                <vue-rangedate-picker @selected="onDateSelected" i18n="EN" format="YYYY-MM-DD hh:mm:ss">
-                </vue-rangedate-picker>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="column">
-          <div class="card">
-            <p class="title is-4">Range Date Right To Left</p>
-            <br>
-            <p class="subtitle is-6">Start Date : {{ selectedDate.start }}</p>
-            <p class="subtitle is-6">End Date : {{ selectedDate.end }}</p>
-
-            <div class="card-content">
-              <div class="daterange-wrapper">
-                <vue-rangedate-picker @selected="onDateSelected" i18n="EN" righttoleft="true">
-                </vue-rangedate-picker>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-      <div class="columns is-centered">
-
-        <div class="column">
-          <div class="card">
-            <p class="title is-4">Range Date Compact Mode</p>
-            <br>
-            <p class="subtitle is-6">Start Date : {{ selectedDate.start }}</p>
-            <p class="subtitle is-6">End Date : {{ selectedDate.end }}</p>
-
-            <div class="card-content">
-              <div class="compact-wrapper">
-                <vue-rangedate-picker @selected="onDateSelected" compact="true" i18n="EN">
-                </vue-rangedate-picker>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
       </div>
     </div>
   </main>
-
-  <footer class="container">
-    <div class="columns has-text-centered">
-      <div class="column">
-        <a href="https://bulma.io" target="_blank">
-          <img src="https://bulma.io/images/made-with-bulma.png" alt="Made with Bulma" width="128" height="24">
-        </a>
-        <br>
-        <small>Copyright © 2017 by
-          <a href="https://github.com/bliblidotcom" target="_blank">Blibli.com</a>
-        </small>
-      </div>
-    </div>
-  </footer>
 
   <script src="https://unpkg.com/vue@2.5.9/dist/vue.js" type="text/javascript"></script>
   <script src="../dist/vue-rangedate-picker.min.js" type="text/javascript"></script>

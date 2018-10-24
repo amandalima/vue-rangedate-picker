@@ -7,12 +7,16 @@ var app = new Vue({
       selectedDate: {
         start: '',
         end: ''
-      }
+      },
+      periodo: ''
     }
   },
   methods: {
     onDateSelected: function (daterange) {
       this.selectedDate = daterange
+    },
+    periodoSelecionado: function (periodo) {
+      this.periodo = periodo
     }
   }
 })
