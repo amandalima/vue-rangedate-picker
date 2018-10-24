@@ -1,12 +1,12 @@
 <template>
 	<div class="calendar-root">
-		<div class="input-date" @click="toggleCalendar()"> {{getRange('start')}} - {{getRange('end')}}</div>
-		<div class="calendar" :class="{'calendar-mobile ': isCompact, 'calendar-thin' : !diario, 'calendar-large': diario}" v-if="isOpen">
-			<div class="calendar-head" v-if="!isCompact">
+		<div class="vue-rangedate-picker-input-date" @click="toggleCalendar()"> {{getRange('start')}} - {{getRange('end')}}</div>
+		<div class="calendar" :class="{'calendar-thin' : !diario, 'calendar-large': diario}" v-if="isOpen">
+			<div class="calendar-head">
 				<h2>{{captions.title}}</h2>
 				<i class="close" @click="toggleCalendar()">&times</i>
 			</div>
-			<div class="calendar-range" :class="{'calendar-range-mobile ': isCompact}" v-if="!showMonth || !isCompact">
+			<div class="calendar-range">
 				<ul class="calendar_preset">
 					<li
 						class="calendar_preset-ranges"
@@ -21,10 +21,9 @@
 			</div>
 
 			<div class="calendar-wrap periodo-diario" v-if="diario">
-				<div class="calendar_month_left" :class="{'calendar-left-mobile': isCompact}" v-if="showMonth">
+				<div class="calendar_month_left" v-if="showMonth">
 					<div class="months-text">
 						<i class="left" @click="goPrevMonth"></i>
-						<i class="right" @click="goNextMonth" v-if="isCompact"></i>
 						{{monthsLocale[activeMonthStart] +' '+ activeYearStart}}</div>
 						<ul :class="s.daysWeeks">
 							<li v-for="item in shortDaysLocale" :key="item">{{item}}</li>
@@ -36,7 +35,7 @@
 								@click="selectFirstItem(r, i)"></li>
 						</ul>
 				</div>
-				<div class="calendar_month_right" v-if="!isCompact">
+				<div class="calendar_month_right">
 					<div class="months-text">
 						{{monthsLocale[startNextActiveMonth] +' '+ activeYearEnd}}
 						<i class="right" @click="goNextMonth"></i>
@@ -86,19 +85,21 @@
 <script src="./js/rangedate-picker.js"></script>
 
 <style lang="css" scoped>
-.input-date {
+.vue-rangedate-picker-input-date {
 	display: block;
-	border: 1px solid #ccc;
-	padding: 5px;
 	font-size: 14px;
 	width: 230px;
 	cursor: pointer;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #E0E0E0;
 }
 
-.input-date::after {
+.vue-rangedate-picker-input-date::after {
 	content: "▼";
 	float: right;
 	font-size: smaller;
+	color: #E0E0E0;
 }
 
 .active-preset {
@@ -149,7 +150,6 @@
 
 .calendar-thin {
 	width: 400px;
-	height: 200px;
 }
 
 .calendar-large {
@@ -159,16 +159,17 @@
 
 .calendar-head h2 {
 	padding: 20px 0 0 20px;
+	font-size: 14px;
 	margin: 0;
 }
 
 .calendar-foot {
-	padding: 3px;
 	width: 100%;
 }
 
 .calendar-foot > button {
 	display: inline-block;
+	margin: 0 10px 10px 10px
 }
 
 .close:hover {
@@ -190,7 +191,6 @@
 .calendar-wrap {
 	display: inline-block;
 	float: left;
-	padding: 0 10px;
 }
 
 .periodo-diario {
@@ -206,10 +206,6 @@
 	padding: 0 12px;
 	border-right: 1px solid #ccc;
 	margin-top: 15px;
-}
-
-.calendar-left-mobile {
-	width: 100% !important;
 }
 
 .calendar_month_left,
@@ -292,19 +288,6 @@ li.calendar_days_in-range, .calendar_months_years_in_range {
 	background: #eee;
 }
 
-.calendar-mobile {
-	width: 260px;
-	z-index: 1;
-	box-shadow: none;
-}
-
-.calendar-range-mobile {
-	width: 90%;
-	padding: 2px;
-	border-left: none;
-	margin: -20px 0;
-}
-
 .calendar-btn{
 	border: none;
 	padding: 5px;
@@ -327,7 +310,7 @@ li.calendar_days_in-range, .calendar_months_years_in_range {
 
 .range-month-year {
 	font-size: 15px;
-	padding: 0 5px;
+	padding: 3px 5px;
 	width: 22%;
 	float: left;
 	cursor: pointer;
@@ -358,6 +341,7 @@ li.calendar_days_in-range, .calendar_months_years_in_range {
 .calendar_year {
 	height: 100px;
 	overflow: auto;
+	margin-top: 15px;
 }
 
 </style>

@@ -19,10 +19,6 @@ new window.Vue({
 <strong>Full form</strong>
 <vue-rangedate-picker></vue-rangedate-picker>
 </div>
-<div style="height: 300px">
-<strong>Compact (mobile)</strong>
-<vue-rangedate-picker compact="true"></vue-rangedate-picker>
-</div>
 </div>`,
   components: { VueRangeDatePicker }
 })

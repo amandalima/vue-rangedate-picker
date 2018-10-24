@@ -12,11 +12,5 @@ describe('RangedatePicker', () => {
     })
     vm.$mount()
   })
-
-  describe('image', () => {
-    it('should be /abc.jpg', () => {
-      assert(vm.image === '/abc.jpg', 'You should be implemented!!')
-    })
-  })
 })
 

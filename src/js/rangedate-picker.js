@@ -139,10 +139,6 @@ export default {
       type: Object,
       default: () => null
     },
-    compact: {
-      type: String,
-      default: 'false'
-    },
     righttoleft: {
       type: String,
       default: 'false'
@@ -179,9 +175,6 @@ export default {
     }
   },
   created () {
-    if (this.isCompact) {
-      this.isOpen = true
-    }
     if (this.activeMonthStart === 11) {
       this.activeYearEnd = this.activeYearStart + 1
     }
@@ -234,19 +227,12 @@ export default {
       }
       return tmp
     },
-    isCompact: function () {
-      return this.compact === 'true'
-    },
     isRighttoLeft: function () {
       return this.righttoleft === 'true'
     }
   },
   methods: {
     toggleCalendar: function () {
-      if (this.isCompact) {
-        this.showMonth = !this.showMonth
-        return
-      }
       this.isOpen = !this.isOpen
       this.showMonth = !this.showMonth
       return
@@ -273,14 +259,22 @@ export default {
     getFinalRangeFromMonth: function () {
       const range = {}
       range.start = new Date(this.selectedYearFromMensalPeriod, this.monthRange.start, 1, null, null, null, null)
-      range.end = new Date(this.selectedYearFromMensalPeriod, this.monthRange.end + 1, 0, null, null, null, null)
+      if (this.monthRange.end === '') {
+        range.end = new Date(this.selectedYearFromMensalPeriod, this.monthRange.start + 1, 0, null, null, null, null)
+      } else {
+        range.end = new Date(this.selectedYearFromMensalPeriod, this.monthRange.end + 1, 0, null, null, null, null)
+      }
       return range
     },
     getFinalRangeFromYear: function () {
       const range = {}
       const endYear = parseInt(this.yearsArray[this.yearRange.end]) + 1
       range.start = new Date(this.yearsArray[this.yearRange.start], 0, 1, null, null, null, null)
-      range.end = new Date(endYear, 0, 0, null, null, null, null)
+      if (this.yearRange.end === '') {
+        range.end = new Date(parseInt(this.yearsArray[this.yearRange.start]) + 1, 0, 0, null, null, null, null)
+      } else {
+        range.end = new Date(endYear, 0, 0, null, null, null, null)
+      }
       return range
     },
     getDayIndexInMonth: function (r, i, startMonthDay) {
@@ -317,9 +311,6 @@ export default {
       this.activeYearStart))
       if (this.dateRange.start && this.dateRange.end) {
         this.presetActive = ''
-        if (this.isCompact) {
-          this.showMonth = false
-        }
       }
     },
     selectSecondItem (r, i) {
@@ -390,7 +381,7 @@ export default {
       this.diario = item.diario
     },
     setDateValue: function () {
-      if (this.mensal) {
+      if (this.mensal && this.monthRange.start !== '') {
         this.$emit('selected', this.getFinalRangeFromMonth())
         this.$emit('periodo', 'MENSAL')
       }
@@ -398,13 +389,11 @@ export default {
         this.$emit('selected', this.dateRange)
         this.$emit('periodo', 'DIARIO')
       }
-      if (this.anual) {
+      if (this.anual && this.yearRange.start !== '') {
         this.$emit('selected', this.getFinalRangeFromYear())
         this.$emit('periodo', 'ANUAL')
       }
-      if (!this.isCompact) {
-        this.toggleCalendar()
-      }
+      this.toggleCalendar()
     },
     clearDateValue: function () {
       this.monthRange.start = ''
@@ -412,6 +401,8 @@ export default {
       this.dateRange = {}
       this.yearRange.start = ''
       this.yearRange.end = ''
+      this.$emit('selected', {})
+      this.$emit('periodo', '')
     },
     isMonthSelected: function (pos) {
       if (this.monthRange.start === pos || this.monthRange.end === pos) {
