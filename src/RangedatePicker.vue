@@ -25,13 +25,14 @@
 					<div class="months-text">
 						<i class="left" @click="goPrevMonth"></i>
 						{{monthsLocale[activeMonthStart] +' '+ activeYearStart}}</div>
-						<ul :class="s.daysWeeks">
+						<ul  :class="s.daysWeeks">
 							<li v-for="item in shortDaysLocale" :key="item">{{item}}</li>
 						</ul>
 						<ul v-for="r in 6" :class="[s.days]" :key="r">
 							<li :class="[{[s.daysSelected]: isDateSelected(r, i, 'first', startMonthDay, endMonthDate),
 							[s.daysInRange]: isDateInRange(r, i, 'first', startMonthDay, endMonthDate),
-							[s.dateDisabled]: isDateDisabled(r, i, startMonthDay, endMonthDate)}]" v-for="i in numOfDays" :key="i" v-html="getDayCell(r, i, startMonthDay, endMonthDate)"
+							[s.dateDisabled]: isDateDisabled(r, i, activeMonthStart, activeYearStart)}]" 
+								v-for="i in numOfDays" :key="i" v-html="getDayCell(r, i, startMonthDay, endMonthDate)"
 								@click="selectFirstItem(r, i)"></li>
 						</ul>
 				</div>
@@ -46,7 +47,7 @@
 					<ul v-for="r in 6" :class="[s.days]" :key="r">
 						<li :class="[{[s.daysSelected]: isDateSelected(r, i, 'second', startNextMonthDay, endNextMonthDate),
 						[s.daysInRange]: isDateInRange(r, i, 'second', startNextMonthDay, endNextMonthDate),
-						[s.dateDisabled]: isDateDisabled(r, i, startNextMonthDay, endNextMonthDate)}]"
+						[s.dateDisabled]: isDateDisabled(r, i, startNextActiveMonth, activeYearEnd)}]"
 								v-for="i in numOfDays" :key="i" v-html="getDayCell(r, i, startNextMonthDay, endNextMonthDate)"
 									@click="selectSecondItem(r, i)"></li>
 					</ul>
@@ -74,8 +75,8 @@
 				</div>
 			</div>
 			<div class="calendar-wrap calendar-foot">
-				<button class="calendar-btn btn-apply" @click="setDateValue()">{{captions.ok_button}}</button>
-				<button class="calendar-btn btn-clear" @click="clearDateValue()">{{captions.clear_button}}</button>
+				<button type="button" class="calendar-btn btn-apply" @click="setDateValue()">{{captions.ok_button}}</button>
+				<button type="button" class="calendar-btn btn-clear" @click="clearDateValue()">{{captions.clear_button}}</button>
 			</div>
 			
 		</div>
@@ -254,7 +255,9 @@
 	color: #000;
 }
 li.calendar_days--disabled{
-	 pointer-events: none;
+	cursor: default;
+	color: #ccc;
+	pointer-events: none;
 }
 
 .calendar_months_years_disabled {

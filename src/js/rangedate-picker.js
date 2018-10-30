@@ -1,5 +1,3 @@
-import fecha from 'fecha'
-
 const defaultConfig = {}
 const defaultI18n = 'ID'
 const availableMonths = {
@@ -24,18 +22,18 @@ const availableShortDays = {
 
 const presetRangeLabel = {
   EN: {
-    periodomensal: 'Mensal',
     periododiario: 'Diário',
+    periodomensal: 'Mensal',
     periodoanual: 'Anual'
   },
   PT: {
-    periodomensal: 'Mensal',
     periododiario: 'Diário',
+    periodomensal: 'Mensal',
     periodoanual: 'Anual'
   },
   ID: {
-    periodomensal: 'Mensal',
     periododiario: 'Diário',
+    periodomensal: 'Mensal',
     periodoanual: 'Anual'
   }
 }
@@ -62,21 +60,21 @@ const defaultStyle = {
 
 const defaultPresets = function (i18n = defaultI18n) {
   return {
-    periodomensal: function () {
-      return {
-        label: presetRangeLabel[i18n].periodomensal,
-        active: 'mensal',
-        mensal: true,
-        diario: false,
-        anual: false
-      }
-    },
     periododiario: function () {
       return {
         label: presetRangeLabel[i18n].periododiario,
         active: 'diario',
         mensal: false,
         diario: true,
+        anual: false
+      }
+    },
+    periodomensal: function () {
+      return {
+        label: presetRangeLabel[i18n].periodomensal,
+        active: 'mensal',
+        mensal: true,
+        diario: false,
         anual: false
       }
     },
@@ -121,7 +119,7 @@ export default {
     },
     styles: {
       type: Object,
-      default: () => {}
+      default: () => { }
     },
     initRange: {
       type: Object,
@@ -146,6 +144,10 @@ export default {
     anoInicial: {
       type: String,
       default: '1900'
+    },
+    periodoMaximo: {
+      type: String,
+      default: '30'
     }
   },
   data () {
@@ -237,12 +239,11 @@ export default {
       this.showMonth = !this.showMonth
       return
     },
-    getDateString: function (date, format = this.format) {
+    getDateString: function (date) {
       if (!date) {
         return null
       }
-      const dateparse = new Date(Date.parse(date))
-      return fecha.format(new Date(dateparse.getFullYear(), dateparse.getMonth(), dateparse.getDate() - 1), format)
+      return date.getDate() - 1 + ' ' + this.shortMonths[date.getMonth()] + ' ' + date.getFullYear()
     },
     getRange: function (range) {
       if (this.mensal) {
@@ -308,7 +309,7 @@ export default {
     selectFirstItem (r, i) {
       const result = this.getDayIndexInMonth(r, i, this.startMonthDay) + 1
       this.dateRange = Object.assign({}, this.dateRange, this.getNewDateRange(result, this.activeMonthStart,
-      this.activeYearStart))
+        this.activeYearStart))
       if (this.dateRange.start && this.dateRange.end) {
         this.presetActive = ''
       }
@@ -316,10 +317,13 @@ export default {
     selectSecondItem (r, i) {
       const result = this.getDayIndexInMonth(r, i, this.startNextMonthDay) + 1
       this.dateRange = Object.assign({}, this.dateRange, this.getNewDateRange(result, this.startNextActiveMonth,
-      this.activeYearEnd))
+        this.activeYearEnd))
       if (this.dateRange.start && this.dateRange.end) {
         this.presetActive = ''
       }
+    },
+    disableAfterMaxPeriod () {
+      document.getElementById()
     },
     selectMes (pos) {
       if (this.monthRange.start === '') {
@@ -356,11 +360,6 @@ export default {
       }
       return (this.dateRange.start && this.dateRange.start.getTime() < currDate.getTime()) &&
         (this.dateRange.end && this.dateRange.end.getTime() > currDate.getTime())
-    },
-    isDateDisabled (r, i, startMonthDay, endMonthDate) {
-      const result = this.getDayIndexInMonth(r, i, startMonthDay)
-      // bound by > 0 and < last day of month
-      return !(result > 0 && result <= endMonthDate)
     },
     goPrevMonth () {
       const prevMonth = new Date(this.activeYearStart, this.activeMonthStart, 0)
@@ -459,6 +458,13 @@ export default {
       } else {
         this.yearRange.end = pos
       }
+    },
+    isDateDisabled: function (r, i, month, year) {
+      const day = this.getDayIndexInMonth(r, i, this.startMonthDay) + 1
+      const resultDate = new Date(year, month, day)
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      return resultDate > today
     }
   }
 }
